@@ -1,5 +1,10 @@
 package com.cognizant.inventory.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +28,7 @@ import com.cognizant.inventory.repository.StockRepository;
 
 @RestController
 @RequestMapping("/cognizant/purchase")
+@Api(value = "Purchase Management", description = "Operations pertaining to Purchase in Inventory Management System")
 public class PurchaseController {
 	
 	@Autowired
@@ -37,7 +43,7 @@ public class PurchaseController {
 	@Autowired
 	private StockRepository stockRepository;
 	
-	//Creating purchase order
+	@ApiOperation(value = "Add a purchase")
 	@PostMapping("/addPurchase")
     public PurchaseOrder createOrder(@RequestBody PurchaseOrder Order) {
 		
@@ -69,12 +75,18 @@ public class PurchaseController {
         return purchaseRepository.save(purchaseOrder);
         
     }
-	
+	@ApiOperation(value = "View a list of purchases done", response = List.class)
+    @ApiResponses(value = {
+        @ApiResponse(code = 200, message = "Successfully retrieved list"),
+        @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    })
 	@GetMapping("/getPurchase")
     public List<PurchaseOrder> getAllPurchase() {
         return purchaseRepository.findAll();
     }
-	
+	@ApiOperation(value = "Get a purchase by Id")
 	@GetMapping("/getPurchase/{id}")
     public ResponseEntity<PurchaseOrder> getPurchaseById(@PathVariable(value = "id") Long purchaseId)
         throws ResourceNotFoundException {
@@ -82,6 +94,7 @@ public class PurchaseController {
           .orElseThrow(() -> new ResourceNotFoundException("Purchase not found for this id :: " + purchaseId));
         return ResponseEntity.ok().body(purchase);
     }
+	@ApiOperation(value = "Update a purchase")
 	@PutMapping("/updatePurchase/{id}")
     public ResponseEntity<PurchaseOrder> updatePurchase(@PathVariable(value = "id") Long purchaseId,
          @RequestBody PurchaseOrder purchaseDetails) throws ResourceNotFoundException {
@@ -96,7 +109,7 @@ public class PurchaseController {
 		final PurchaseOrder updatedPurchase = purchaseRepository.save(purchase);
         return ResponseEntity.ok(updatedPurchase);
     }
-	
+	@ApiOperation(value = "Delete a purchase")
 	@DeleteMapping("/deletePurchase/{id}")
     public Map<String, Boolean> deleteSales(@PathVariable(value = "id") Long purchaseId)
          throws ResourceNotFoundException {

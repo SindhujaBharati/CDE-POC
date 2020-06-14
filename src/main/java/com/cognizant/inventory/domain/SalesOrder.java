@@ -1,5 +1,7 @@
 package com.cognizant.inventory.domain;
 
+import io.swagger.annotations.ApiModel;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "SalesOrder")
+@ApiModel(description = "All details about the Sales. ")
 public class SalesOrder {
 	
 	public SalesOrder() {

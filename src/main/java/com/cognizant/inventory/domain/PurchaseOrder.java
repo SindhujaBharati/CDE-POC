@@ -1,16 +1,20 @@
 package com.cognizant.inventory.domain;
 
+import io.swagger.annotations.ApiModel;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.springframework.stereotype.Component;
 
 @Component
 @Entity
 @Table(name = "PurchaseOrder")
+@ApiModel(description = "All details about the Purchase. ")
 public class PurchaseOrder {
 	
 	public PurchaseOrder() {
